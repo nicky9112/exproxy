@@ -1,0 +1,23 @@
+[
+  {
+    "url": "/",
+    "target": "/",
+    "api": "data",
+    "method": "GET",
+    "desc": "web root"
+  },
+  {
+    "url": "/users/:id",
+    "target": "/users/:id",
+    "api": "data",
+    "method": "GET",
+    "desc": "user detail"
+  },
+  {
+    "url": "/users",
+    "target": "/users",
+    "api": "data",
+    "method": "POST",
+    "desc": "add user"
+  }
+]

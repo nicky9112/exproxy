@@ -1,0 +1,9 @@
+[
+  {
+    "url": "/books/:id",
+    "target": "/books/:id",
+    "api": "other",
+    "method": "GET",
+    "desc": "book detail"
+  }
+]
