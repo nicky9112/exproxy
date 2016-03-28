@@ -4,7 +4,7 @@
   "description": "express http proxy middleware",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/gulp test"
+    "test": "./node_modules/.bin/gulp"
   },
   "keywords": [
     "proxy",
