@@ -6,7 +6,7 @@ It build from express router and just need some config file you will make proxy 
 # Install
 
 ```bash
-npm i nicky@exproxy --save
+npm i nicky9112@exproxy --save
 ```
 
 # Usage
@@ -55,12 +55,16 @@ var express = require('express'),
     app = express(),
     router = express.Router();
 
-// some middlewares
+// some other middlewares eg: body-parser ...
 
 app.use(exproxy(router,{config: config}));
+
+app.listen(3000);
 ```
 
 exproxy will read `router-path` that in your `config.js/json` file, and loop every item in `*.json` to make a router.
+
+now request your `app` server will forward `data` api that you declare in `*.json`.
 
 # Licence
 
