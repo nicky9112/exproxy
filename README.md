@@ -1,5 +1,7 @@
 # exproxy
 
+[![Build Status](https://travis-ci.org/nicky9112/exproxy.svg?branch=master)](https://travis-ci.org/nicky9112/exproxy)
+
 exproxy is designed to be the simplest way possible to make proxy http calls.
 It build from express router and just need some config file you will make proxy server.
 
