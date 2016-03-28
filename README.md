@@ -9,7 +9,7 @@ It build from express router and just need some config file you will make proxy 
 # Install
 
 ```bash
-npm i nicky9112@exproxy --save
+npm i @nicky9112/exproxy --save
 ```
 
 # Usage
@@ -52,7 +52,7 @@ module.exports = {
 
 ```javascript
 var express = require('express'),
-    exproxy = require('exproxy'),
+    exproxy = require('@nicky9112/exproxy'),
     
     config = require('./config'), // see above config.js/.json
     app = express(),
