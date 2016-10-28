@@ -1,6 +1,6 @@
 {
   "name": "@nicky9112/exproxy",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "express http proxy middleware",
   "main": "index.js",
   "scripts": {

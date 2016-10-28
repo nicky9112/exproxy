@@ -19,5 +19,12 @@
     "api": "data",
     "method": "POST",
     "desc": "add user"
+  },
+  {
+    "url": "/users/:id/other",
+    "target": "/users/:id/other",
+    "api": "data",
+    "method": "GET",
+    "desc": "user detail"
   }
 ]
