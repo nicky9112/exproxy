@@ -73,6 +73,8 @@ before(function () {
     });
   });
 
+  app.set('views', __dirname + '/view');
+  app.set('view engine', 'ejs');
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(exproxy(router, config));
@@ -162,5 +164,14 @@ describe('mock test', function () {
       .expect({
         user: true
       }, done);
+  });
+});
+
+describe('view test', function () {
+
+  it('should response html', function (done) {
+    supertest(app)
+      .get('/users/123/page')
+      .expect('Content-Type', 'text/html; charset=utf-8', done);
   });
 });

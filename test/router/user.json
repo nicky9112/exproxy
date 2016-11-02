@@ -14,6 +14,10 @@
     "desc": "user detail"
   },
   {
+    "url": "/users/:id/page",
+    "view": "index.ejs"
+  },
+  {
     "url": "/users",
     "target": "/users",
     "api": "data",

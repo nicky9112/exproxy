@@ -111,7 +111,8 @@ module.exports = function (router, config) {
     var url = routerItem.url,
       target = routerItem.target,
       targetApi = routerItem.api,
-      method = routerItem.method,
+      method = routerItem.method ? routerItem.method.toLowerCase() : 'get',
+      view = routerItem.view,
 
       targetUrl, requestOption;
 
@@ -120,9 +121,14 @@ module.exports = function (router, config) {
       throw new Error('exproxy router url was required');
     }
 
-    if (!method) {
+    if (view) {
 
-      throw new Error('exproxy router ' + url + ' method was required');
+      router[method](url, function (req, res) {
+
+        return res.render(view);
+      });
+
+      return;
     }
 
     if (!target) {
@@ -137,7 +143,6 @@ module.exports = function (router, config) {
 
     targetUrl = pathToRegexp.compile(routerItem.target);
     targetApi = apiMap[routerItem.api];
-    method = routerItem.method.toLocaleLowerCase();
     requestOption = {
       method: method,
       json: true
