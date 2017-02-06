@@ -3,7 +3,8 @@ var fs = require('fs'),
 
   glob = require('glob'),
   request = require('request'),
-  pathToRegexp = require('path-to-regexp');
+  pathToRegexp = require('path-to-regexp'),
+  _ = require('lodash');
 
 // 1. validate config attribute
 // 2. load routePath/routeFiles
@@ -22,6 +23,8 @@ module.exports = function (router, config) {
     mockRouteFiles = config.mockRouteFiles,
     apiMap = config.apiMap,
     enableMock = config.mock,
+    globalHeaeder = config.header,
+    timeout = config.timeout || 10000,
     spaceStr = ' ',
     routeDefArray = [], mockRouteDefArray = [], mockRouteDefMap = {};
 
@@ -33,6 +36,11 @@ module.exports = function (router, config) {
   if (!apiMap) {
 
     throw new Error('exproxy config.apiMap was required');
+  }
+
+  if (timeout && timeout <= 1000) {
+
+    throw new Error('exproxy timeout is number of milliseconds');
   }
 
   // routePath should be an absolute path like /app_dir/**.js or /app_dir/**/**.json
@@ -173,9 +181,33 @@ module.exports = function (router, config) {
     // handle request
     function handler(req, res, next) {
 
+      var rawHeaders = {}, customHeader = {};
+
+      // ['encoding', 'UTF-8', 'k', 'v'] => {encoding: 'UTF-8', k: v}
+      _.forEach(req.rawHeaders, function (item, index, headers) {
+
+        if (index % 2 === 0) {
+
+          rawHeaders[item] = headers[index + 1];
+        }
+      });
+
+      if (globalHeaeder) {
+
+        _.keys(rawHeaders).filter(function (item) {
+
+          return globalHeaeder.test(item);
+        }).forEach(function (item) {
+
+          customHeader[item] = rawHeaders[item];
+        });
+      }
+
       requestOption.url = targetApi + targetUrl(req.params);
       requestOption.qs = req.query;
       requestOption.body = req.body;
+      requestOption.headers = customHeader;
+      requestOption.timeout = timeout;
 
       // forward request
       request(requestOption, function (err, resp) {

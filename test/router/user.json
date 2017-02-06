@@ -7,6 +7,12 @@
     "desc": "web root"
   },
   {
+    "url": "/me",
+    "target": "/me",
+    "api": "data",
+    "desc": "user info"
+  },
+  {
     "url": "/users/:id",
     "target": "/users/:id",
     "api": "data",

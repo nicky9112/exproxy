@@ -15,6 +15,7 @@ var app = express(),
       data: "http://127.0.0.1:5000",
       other: "http://127.0.0.1:6000"
     },
+    header: /X-*/,
     mock: true, // enable mock
     mockRoutePath: path.resolve('./test/mock-router') + '/**.js*'
   };
@@ -27,6 +28,12 @@ before(function () {
   dataServer.get('/', function (req, res) {
     return res.json({success: true});
   });
+
+  dataServer.get('/me', function (req, res) {
+
+    return res.json({id: 'xxx-xxx-xxx', token: req.get('X-Token')});
+  });
+
   dataServer.get('/users/:id', function (req, res) {
     return res.json({
       id: req.params.id,
@@ -34,9 +41,11 @@ before(function () {
       age: 12
     });
   });
+
   dataServer.post('/users', function (req, res) {
     return res.json(req.body);
   });
+
   dataServer.get('/users/:id/cart', function (req, res) {
     return res.json({
       bookList: [
@@ -101,6 +110,7 @@ describe('proxy test', function () {
   it('should response all body params', function (done) {
     supertest(app)
       .post('/users')
+      .set('X-Token', 'ajlfjflajfjl')
       .send({name: 'Nicky', age: 25})
       .expect({
         name: 'Nicky',
@@ -173,5 +183,18 @@ describe('view test', function () {
     supertest(app)
       .get('/users/123/page')
       .expect('Content-Type', 'text/html; charset=utf-8', done);
+  });
+});
+
+describe('custom header test', function () {
+
+  it('should response header what they send', function (done) {
+    supertest(app)
+      .get('/me')
+      .set('X-Token', '123456789')
+      .expect({
+        id: 'xxx-xxx-xxx',
+        token: '123456789'
+      }, done);
   });
 });
