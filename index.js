@@ -26,7 +26,7 @@ module.exports = function (router, config) {
     globalHeaeder = config.header,
     timeout = config.timeout || 10000,
     spaceStr = ' ',
-    routeDefArray = [], mockRouteDefArray = [], mockRouteDefMap = {};
+    routeDefArray, mockRouteDefArray, mockRouteDefMap = {};
 
   if (!routePath && !routeFiles) {
 
@@ -61,17 +61,7 @@ module.exports = function (router, config) {
 
     mockRouteFiles = mockRouteFiles ? mockRouteFiles : glob.sync(mockRoutePath);
 
-    mockRouteFiles.forEach(function (mockRouterFile) {
-
-      var mockRouterDef = require(mockRouterFile);
-
-      if (!Array.isArray(mockRouterDef)) {
-
-        throw new Error('router file ' + mockRouterFile + 'was not corrent');
-      }
-
-      mockRouteDefArray = mockRouteDefArray.concat(mockRouterDef);
-    });
+    mockRouteDefArray = _loadFiles(mockRouteFiles);
 
     mockRouteDefArray.forEach(function (mockRouteDef) {
 
@@ -101,17 +91,7 @@ module.exports = function (router, config) {
   }
 
   // loop router files and concat all router definition
-  routeFiles.forEach(function (routerFile) {
-
-    var routerDef = require(routerFile);
-
-    if (!Array.isArray(routerDef)) {
-
-      throw new Error('router file ' + routerFile + 'was not corrent');
-    }
-
-    routeDefArray = routeDefArray.concat(routerDef);
-  });
+  routeDefArray = _loadFiles(routeFiles);
 
   // loop all router definition
   routeDefArray.forEach(function (routerItem) {
@@ -221,3 +201,23 @@ module.exports = function (router, config) {
 
   return router;
 };
+
+// load files
+function _loadFiles(files) {
+
+  var moduleDefArray = [];
+
+  files.forEach(function (file) {
+
+    var moduleDef = require(file);
+
+    if (!Array.isArray(moduleDef)) {
+
+      throw new Error('module file(router-file mock-file) ' + file + ' should be json array file or export array');
+    }
+
+    moduleDefArray = moduleDefArray.concat(moduleDef);
+  });
+
+  return moduleDefArray;
+}
