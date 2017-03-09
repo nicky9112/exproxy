@@ -113,7 +113,7 @@ module.exports = function (router, config) {
 
       router[method](url, function (req, res) {
 
-        return res.render(view);
+        return res.render(view, {reqContext: {params: req.params, session: req.session}});
       });
 
       return;
