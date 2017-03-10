@@ -114,7 +114,7 @@ module.exports = function (router, config) {
 
       router[method](url, function (req, res) {
 
-        return res.render(view, {reqContext: {params: req.params, session: req.session}});
+        return res.render(view, {reqContext: {params: req.params, session: req.session, qs: req.query}});
       });
 
       return;
@@ -192,7 +192,7 @@ module.exports = function (router, config) {
 
       if (preReqHook && typeof preReqHook === 'function') {
 
-        preReqHook.call(null, requestOption);
+        preReqHook.call(null, requestOption, req);
       }
 
       // forward request
