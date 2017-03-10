@@ -21,6 +21,7 @@ module.exports = function (router, config) {
     routeFiles = config.routeFiles,
     mockRoutePath = config.mockRoutePath,
     mockRouteFiles = config.mockRouteFiles,
+    preReqHook = config.preReqHook,
     apiMap = config.apiMap,
     enableMock = config.mock,
     globalHeaeder = config.header,
@@ -188,6 +189,11 @@ module.exports = function (router, config) {
       requestOption.body = req.body;
       requestOption.headers = customHeader;
       requestOption.timeout = timeout;
+
+      if (preReqHook && typeof preReqHook === 'function') {
+
+        preReqHook.call(null, requestOption);
+      }
 
       // forward request
       request(requestOption, function (err, resp) {
